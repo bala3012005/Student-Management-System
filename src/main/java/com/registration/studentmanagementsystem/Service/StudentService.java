@@ -1,5 +1,6 @@
 package com.registration.studentmanagementsystem.Service;
 
+import com.registration.studentmanagementsystem.DTO.StudentPatchDTO;
 import com.registration.studentmanagementsystem.DTO.StudentRequestDTO;
 import com.registration.studentmanagementsystem.DTO.StudentResponseDTO;
 import com.registration.studentmanagementsystem.Model.Student;
@@ -33,6 +34,20 @@ public class StudentService {
         studentRepo.save(student);
     }
 
+    public void addStudents(List<StudentRequestDTO> studentRequestDTOs) {
+        List<Student> students = new java.util.ArrayList<>();
+        for (StudentRequestDTO dto : studentRequestDTOs) {
+            Student student = new Student();
+            student.setName(dto.getName());
+            student.setEmail(dto.getEmail());
+            student.setPassword(dto.getPassword());
+            student.setCourse(dto.getCourse());
+            student.setFees(dto.getFees());
+            students.add(student);
+        }
+        studentRepo.saveAll(students);
+    }
+
     public StudentResponseDTO getStudentById(int id) {
         Student student = studentRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("Student not found with id: " + id));
@@ -52,15 +67,20 @@ public class StudentService {
         studentRepo.save(student);
     }
 
-    public void updateStudentPartial(int id, StudentRequestDTO studentRequestDTO) {
+    public void updateStudentPartial(int id, StudentPatchDTO studentPatchDTO) {
         Student student = studentRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("student not found with id: " + id));
 
-        if (studentRequestDTO.getName() != null) student.setName(studentRequestDTO.getName());
-        if (studentRequestDTO.getEmail() != null) student.setEmail(studentRequestDTO.getEmail());
-        if (studentRequestDTO.getPassword() != null) student.setPassword(studentRequestDTO.getPassword());
-        if (studentRequestDTO.getCourse() != null) student.setCourse(studentRequestDTO.getCourse());
-        if (studentRequestDTO.getFees() != null) student.setFees(studentRequestDTO.getFees());
+        if (studentPatchDTO.getName() != null)
+            student.setName(studentPatchDTO.getName());
+        if (studentPatchDTO.getEmail() != null)
+            student.setEmail(studentPatchDTO.getEmail());
+        if (studentPatchDTO.getPassword() != null)
+            student.setPassword(studentPatchDTO.getPassword());
+        if (studentPatchDTO.getCourse() != null)
+            student.setCourse(studentPatchDTO.getCourse());
+        if (studentPatchDTO.getFees() != null)
+            student.setFees(studentPatchDTO.getFees());
 
         studentRepo.save(student);
     }

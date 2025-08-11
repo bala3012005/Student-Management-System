@@ -1,5 +1,6 @@
 package com.registration.studentmanagementsystem.Controller;
 
+import com.registration.studentmanagementsystem.DTO.StudentPatchDTO;
 import com.registration.studentmanagementsystem.DTO.StudentRequestDTO;
 import com.registration.studentmanagementsystem.DTO.StudentResponseDTO;
 import com.registration.studentmanagementsystem.Service.StudentService;
@@ -28,10 +29,16 @@ public class StudentController {
         return studentService.getStudentById(id);
     }
     
-    @PostMapping("/students")
+    @PostMapping("/student")
     public ResponseEntity<String> addStudent(@Valid @RequestBody StudentRequestDTO studentRequestDTO) {
         studentService.addStudent(studentRequestDTO);
         return ResponseEntity.ok("Student added successfully");
+    }
+
+    @PostMapping("/students/batch")
+    public ResponseEntity<String> addStudents(@Valid @RequestBody List<StudentRequestDTO> studentRequestDTOs) {
+        studentService.addStudents(studentRequestDTOs);
+        return ResponseEntity.ok("Students added successfully");
     }
 
     @PutMapping("/students/{id}")
@@ -41,8 +48,8 @@ public class StudentController {
     }
 
     @PatchMapping("/students/{id}")
-    public ResponseEntity<String> updateStudentPartial(@PathVariable int id, @Valid @RequestBody StudentRequestDTO studentRequestDTO) {
-        studentService.updateStudentPartial(id, studentRequestDTO);
+    public ResponseEntity<String> updateStudentPartial(@PathVariable int id, @RequestBody StudentPatchDTO studentPatchDTO) {
+        studentService.updateStudentPartial(id, studentPatchDTO);
         return ResponseEntity.ok("Student updated successfully");
     }
 
